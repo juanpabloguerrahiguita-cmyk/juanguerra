@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Colombia bajo presión — Presentación interactiva</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #22d3ee;
+      --danger: #fb7185;
+      --warn: #f59e0b;
+      --ok: #34d399;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(circle at top, #1e293b, var(--bg));
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .app {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem 1rem 3rem;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: .75rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    h1 { margin: 0; font-size: clamp(1.2rem, 2vw, 2rem); }
+    .sub { color: var(--muted); font-size: .95rem; }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin: 1rem 0;
+    }
+    button {
+      border: 1px solid #374151;
+      background: #111827;
+      color: var(--text);
+      padding: .55rem .8rem;
+      border-radius: .6rem;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+    button:hover, button.active {
+      border-color: var(--accent);
+      color: #cffafe;
+      box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2);
+    }
+
+    .slide {
+      display: none;
+      background: linear-gradient(180deg, rgba(31,41,55,.85), rgba(17,24,39,.95));
+      border: 1px solid #374151;
+      border-radius: 1rem;
+      padding: 1rem;
+      animation: fade .25s ease;
+    }
+    .slide.active { display: block; }
+    @keyframes fade { from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none} }
+
+    h2 { margin-top: 0; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: .75rem;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid #374151;
+      border-radius: .75rem;
+      padding: .8rem;
+    }
+    .metric { font-size: 1.5rem; font-weight: 700; }
+    .negative { color: var(--danger); }
+    .warning { color: var(--warn); }
+    .positive { color: var(--ok); }
+
+    .timeline {
+      position: relative;
+      margin-left: .5rem;
+      border-left: 2px dashed #334155;
+      padding-left: 1rem;
+    }
+    .event {
+      margin-bottom: .9rem;
+      background: var(--panel);
+      border: 1px solid #374151;
+      border-radius: .6rem;
+      padding: .65rem;
+    }
+    .event time { color: var(--accent); font-weight: 600; }
+    details {
+      background: var(--panel);
+      border: 1px solid #374151;
+      border-radius: .7rem;
+      margin-bottom: .6rem;
+      padding: .55rem .7rem;
+    }
+    summary { cursor: pointer; font-weight: 600; }
+
+    .bars {
+      display: grid;
+      gap: .55rem;
+      margin-top: .7rem;
+    }
+    .bar {
+      background: #0b1220;
+      border: 1px solid #334155;
+      border-radius: .6rem;
+      padding: .45rem .6rem;
+    }
+    .bar span {
+      display: block;
+      height: .55rem;
+      margin-top: .35rem;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #334155, #64748b);
+      overflow: hidden;
+    }
+    .bar i {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #f43f5e, #fb7185);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+      gap: .5rem;
+    }
+    .muted { color: var(--muted); }
+    .pill {
+      display: inline-block;
+      padding: .15rem .45rem;
+      border-radius: 999px;
+      border: 1px solid #475569;
+      font-size: .8rem;
+      color: #cbd5e1;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div>
+        <h1>🇨🇴 Colombia bajo presión en precios, industria y sector externo</h1>
+        <div class="sub">Ventana analizada: <strong>31 de marzo al 21 de abril de 2026</strong> • Presentación interactiva</div>
+      </div>
+      <span class="pill" id="counter">Slide 1 / 6</span>
+    </header>
+
+    <div class="controls" id="tabs"></div>
+
+    <section class="slide active" data-title="1. Resumen ejecutivo">
+      <h2>Resumen ejecutivo</h2>
+      <p>El principal riesgo no es recesión abierta, sino una mezcla incómoda de <strong>inflación persistente</strong>, <strong>industria frágil</strong> y <strong>frente externo más débil</strong>.</p>
+      <div class="grid">
+        <article class="card">
+          <div class="muted">Inflación anual IPC (mar-26)</div>
+          <div class="metric negative">5,56%</div>
+          <small>Repunte frente a febrero y lejos de meta del 3%.</small>
+        </article>
+        <article class="card">
+          <div class="muted">IPP mensual (mar-26)</div>
+          <div class="metric warning">3,94%</div>
+          <small>Minería: +25,77% m/m, presión de costos.</small>
+        </article>
+        <article class="card">
+          <div class="muted">Tasa BanRep (31-mar-26)</div>
+          <div class="metric warning">11,25%</div>
+          <small>Sesgo restrictivo: mayor costo de crédito.</small>
+        </article>
+        <article class="card">
+          <div class="muted">Déficit comercial ene-feb</div>
+          <div class="metric negative">US$ 2.557,8m</div>
+          <small>Mayor que ene-feb 2025 (US$ 2.519,9m).</small>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" data-title="2. Cronología negativa">
+      <h2>Cronología de publicaciones adversas</h2>
+      <div class="timeline">
+        <div class="event"><time>31 mar 2026</time> — BanRep: inflación y expectativas altas; tasa a 11,25%.</div>
+        <div class="event"><time>1 abr 2026</time> — DANE: exportaciones combustibles -6,4% y manufacturas -6,8% (febrero).</div>
+        <div class="event"><time>9 abr 2026</time> — DANE: IPC 0,78% m/m y 5,56% a/a; IPP 3,94% m/m y 4,22% a/a.</div>
+        <div class="event"><time>16 abr 2026</time> — EMMET: producción +1,4%, ventas -2,5%, empleo -0,4%.</div>
+        <div class="event"><time>16 abr 2026</time> — IPI: 0,0% a/a; minería -6,9% a/a; bimestre -0,2%.</div>
+        <div class="event"><time>20 abr 2026</time> — ISE: primarias -2,08%; acumulado bimestral 1,54%.</div>
+        <div class="event"><time>21 abr 2026</time> — Déficit comercial bimestral: US$ 2.557,8m FOB.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="3. Señales por canal macro">
+      <h2>Mapa de presión por canal macro</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Precios <span class="negative">● Negativa</span></h3>
+          <p>IPC + IPP + expectativas altas = menor espacio para recortes rápidos de tasas.</p>
+          <small>Expuestos: hogares, consumo discrecional, empresas con costos sensibles.</small>
+        </article>
+        <article class="card">
+          <h3>Actividad <span class="warning">● Mixta</span></h3>
+          <p>Producción manufacturera crece, pero ventas y empleo siguen débiles.</p>
+          <small>Expuestos: manufactura, minería, proveedores industriales.</small>
+        </article>
+        <article class="card">
+          <h3>Sector externo <span class="negative">● Negativa</span></h3>
+          <p>Caen combustibles y manufacturas; déficit comercial se amplía.</p>
+          <small>Expuestos: hidrocarburos, carbón, exportadores y logística.</small>
+        </article>
+        <article class="card">
+          <h3>Política/tasas <span class="negative">● Negativa</span></h3>
+          <p>“Tasas altas por más tiempo” gana probabilidad.</p>
+          <small>Expuestos: crédito corporativo, vivienda, TES corto/medio plazo.</small>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" data-title="4. Series cortas clave">
+      <h2>Series cortas para video o carrusel</h2>
+      <div class="bars">
+        <div class="bar">Inflación anual: 5,10% (dic-25) → 5,56% (mar-26)<span><i style="width:80%"></i></span></div>
+        <div class="bar">Déficit ene-feb: US$ 2.519,9m (2025) → US$ 2.557,8m (2026)<span><i style="width:65%"></i></span></div>
+        <div class="bar">Termómetro industrial: Producción +1,4 / Ventas -2,5 / Empleo -0,4<span><i style="width:72%"></i></span></div>
+        <div class="bar">IPI sectorial: Minería -6,9 neutraliza mejoras en otros sectores<span><i style="width:88%"></i></span></div>
+      </div>
+      <p class="muted">Útil para contenido digital: cada barra puede convertirse en una lámina o clip de 6–8 segundos.</p>
+    </section>
+
+    <section class="slide" data-title="5. Riesgos y mercado">
+      <h2>Implicaciones para política y mercados</h2>
+      <details open>
+        <summary>Política monetaria</summary>
+        <p>Con IPC alto + IPP fuerte + expectativas elevadas, se reduce el margen para bajar tasa rápidamente. Escenario dominante: <strong>tasas altas por más tiempo</strong>.</p>
+      </details>
+      <details>
+        <summary>Política fiscal</summary>
+        <p>Menor tracción de minería e hidrocarburos puede afectar regalías, renta corporativa y flujo externo, justo con costo financiero elevado.</p>
+      </details>
+      <details>
+        <summary>TES, COP y bolsa</summary>
+        <p>Riesgo al alza en tramo corto/medio de curva TES. Para el peso, efecto mixto: tasa alta ayuda, déficit externo resta. En acciones, mejor perfil defensivo y/o exposición a oro.</p>
+      </details>
+    </section>
+
+    <section class="slide" data-title="6. Cierre y narrativa">
+      <h2>Conclusión narrativa para presentar</h2>
+      <blockquote>
+        Colombia no está en recesión abierta, pero sí en una fase de crecimiento desigual: inflación rígida, industria sin validación plena y sector externo de menor calidad.
+      </blockquote>
+      <p>Mensaje final sugerido: <strong>la fragilidad está en la composición</strong>, no tanto en el titular agregado. Esto exige prudencia en decisiones de crédito, inversión y posicionamiento de portafolio durante el segundo trimestre de 2026.</p>
+      <p class="muted">Tip: usa esta secuencia para storytelling: <em>precios → actividad → externo → política → mercado</em>.</p>
+    </section>
+
+    <div class="nav">
+      <button id="prev">← Anterior</button>
+      <button id="next">Siguiente →</button>
+    </div>
+  </main>
+
+  <script>
+    const slides = [...document.querySelectorAll('.slide')];
+    const tabs = document.getElementById('tabs');
+    const counter = document.getElementById('counter');
+    let index = 0;
+
+    slides.forEach((slide, i) => {
+      const btn = document.createElement('button');
+      btn.textContent = slide.dataset.title;
+      btn.onclick = () => goTo(i);
+      tabs.appendChild(btn);
+    });
+
+    function render() {
+      slides.forEach((s, i) => s.classList.toggle('active', i === index));
+      [...tabs.children].forEach((b, i) => b.classList.toggle('active', i === index));
+      counter.textContent = `Slide ${index + 1} / ${slides.length}`;
+    }
+
+    function goTo(i) {
+      index = (i + slides.length) % slides.length;
+      render();
+    }
+
+    document.getElementById('prev').onclick = () => goTo(index - 1);
+    document.getElementById('next').onclick = () => goTo(index + 1);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') goTo(index + 1);
+      if (e.key === 'ArrowLeft') goTo(index - 1);
+      if (/^[1-6]$/.test(e.key)) goTo(Number(e.key) - 1);
+    });
+
+    render();
+  </script>
+</body>
+</html>
